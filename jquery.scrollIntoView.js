@@ -17,6 +17,10 @@
         // The first argment can be false for no animation or a duration.
         // The first argment could also be a map of options.
         // Refer to http://api.jquery.com/animate/.
+    	if(this.length == 0) {
+    		return this;
+    	}
+    	
         var opts = $.extend({},
         $.fn.scrollIntoView.defaults);
 
