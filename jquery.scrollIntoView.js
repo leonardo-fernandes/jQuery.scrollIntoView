@@ -12,36 +12,24 @@
  * @version 0.3
  */
 (function($) {
-    /*
-     Returns the common ancestor of the elements.
-     It was taken from http://stackoverflow.com/questions/3217147/jquery-first-parent-containing-all-children
-     It has received minimal testing.
-    */
     var commonAncestor = function() {
-        var parents = [];
-        var minlen = Infinity;
-
-        $(this).each(function() {
-            var curparents = $(this).parents();
-            parents.push(curparents);
-            minlen = Math.min(minlen, curparents.length);
-        });
+        var parents = this.parents();
 
         for (var i = 0; i < parents.length; i++) {
-            parents[i] = parents[i].slice(parents[i].length - minlen);
+            var parent = $(parents[i]);
+            var containsAll = true;
+            this.each(function() {
+                if (!parent.has(this)) {
+                    containsAll = false;
+                    return false;
+                }
+            });
+
+            if (containsAll) {
+                return parent;
+            }
         }
 
-        // Iterate until equality is found
-        for (var i = 0; i < parents[0].length; i++) {
-            var equal = true;
-            for (var j = 0; j < parents.length; j++) {
-                if (parents[j][i] != parents[0][i]) {
-                    equal = false;
-                    break;
-                }
-            }
-            if (equal) return $(parents[0][i]);
-        }
         return $([]);
     }
 
@@ -79,7 +67,7 @@
         if (opts.smooth) {
             el.stop().animate({ scrollTop: el.get(0).scrollTop + delta }, opts);
         } else {
-            el.get(0).scrollTop += scrollTo;
+            el.get(0).scrollTop += delta;
             if ($.isFunction(opts.complete)) {
                 opts.complete.call(el.get(0));
             }
@@ -108,19 +96,14 @@
 
         // get enclosing offsets
         var elY = Infinity, elH = 0;
-        if (this.length == 1) {
-            elY = this.offset().top;
-            elH = this.outerHeight(false);
-        } else {
-            this.each(function() {
-                if ($(this).offset().top < elY) {
-                    elY = $(this).offset().top;
-                }
-                if ($(this).offset().top + $(this).outerHeight(false) > elY + elH) {
-                    elH = $(this).offset().top + $(this).outerHeight(false) - elY;
-                }
-            });
-        }
+        this.each(function() {
+            if ($(this).offset().top < elY) {
+                elY = $(this).offset().top;
+            }
+            if ($(this).offset().top + $(this).outerHeight(false) > elY + elH) {
+                elH = $(this).offset().top + $(this).outerHeight(false) - elY;
+            }
+        });
 
         var pEl = scrollableParent.call(this);
         var pY = pEl.offset().top;
