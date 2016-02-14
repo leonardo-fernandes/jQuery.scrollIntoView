@@ -38,32 +38,32 @@
 
     var scrollableParent = function() {
         // start from the common ancestor
-        var pEl = commonAncestor.call(this).get(0);
+        var pEl = commonAncestor.call(this);
 
         // go up parents until we find one that scrolls
-        while (pEl) {
+        while (!pEl.is(":root")) {
             // it wiggles?
-            var scrollTop = pEl.scrollTop;
+            var scrollTop = pEl.get(0).scrollTop;
 
-            pEl.scrollTop = scrollTop;
-            pEl.scrollTop++;
-            if (pEl.scrollTop != scrollTop) {
-                pEl.scrollTop = scrollTop;
-                return $(pEl);
+            pEl.get(0).scrollTop = scrollTop;
+            pEl.get(0).scrollTop++;
+            if (pEl.get(0).scrollTop != scrollTop) {
+                pEl.get(0).scrollTop = scrollTop;
+                return pEl;
             }
 
-            pEl.scrollTop = scrollTop;
-            pEl.scrollTop--;
-            if (pEl.scrollTop != scrollTop) {
-                pEl.scrollTop = scrollTop;
-                return $(pEl);
+            pEl.get(0).scrollTop = scrollTop;
+            pEl.get(0).scrollTop--;
+            if (pEl.get(0).scrollTop != scrollTop) {
+                pEl.get(0).scrollTop = scrollTop;
+                return pEl;
             }
 
             // try next parent
-            pEl = pEl.parentNode;
+            pEl = pEl.parent();
         }
 
-        return $(window);
+        return pEl;
     };
 
     var scroll = function(el, delta, opts) {
@@ -112,12 +112,8 @@
         var pY = pEl.offset().top;
         var pH = pEl.height();
 
-        if (pY + pH > $(window).height()) {
-            pH = $(window).height() - pY;
-        }
-
-        // case: if body's elements are all absolutely/fixed positioned, use window height
-        if (pH == 0 && pEl.get(0).tagName == "BODY") {
+        if (pEl.get(0).tagName == "HTML") {
+            pY = pEl.get(0).scrollTop;
             pH = $(window).height();
         }
 
