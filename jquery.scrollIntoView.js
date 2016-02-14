@@ -46,7 +46,7 @@
     }
 
     var scrollableParent = function() {
-        // start from the common ancester
+        // start from the common ancestor
         var pEl = commonAncestor.call(this).get(0);
 
         // go up parents until we find one that scrolls
@@ -75,6 +75,17 @@
         return $(window);
     };
 
+    var scroll = function(el, delta, opts) {
+        if (opts.smooth) {
+            el.stop().animate({ scrollTop: el.get(0).scrollTop + delta }, opts);
+        } else {
+            el.get(0).scrollTop += scrollTo;
+            if ($.isFunction(opts.complete)) {
+                opts.complete.call(el.get(0));
+            }
+        }
+    }
+
     $.fn.scrollIntoView = function(duration, easing, complete) {
         // The arguments are optional.
         // The first argment can be false for no animation or a duration.
@@ -99,50 +110,35 @@
         var elY = Infinity, elH = 0;
         if (this.length == 1) {
             elY = this.offset().top;
-            elH = this.height();
+            elH = this.outerHeight(false);
         } else {
             this.each(function() {
                 if ($(this).offset().top < elY) {
                     elY = $(this).offset().top;
                 }
-                if ($(this).offset().top + $(this).height() > elH) {
-                    elH = $(this).offset().top + $(this).height();
+                if ($(this).offset().top + $(this).outerHeight(false) > elY + elH) {
+                    elH = $(this).offset().top + $(this).outerHeight(false) - elY;
                 }
             });
-            elH -= elY;
         }
 
-        var wH = $(window).height();
+        var pEl = scrollableParent.call(this);
+        var pY = pEl.offset().top;
+        var pH = pEl.height();
 
-        // start from the common ancester
-        var pEl = scrollableParent.call(this).get(0);
-        var pY = pEl.scrollTop;
-        var pH = pEl.clientHeight;
-
-        if (pH > wH) {
-            pH = wH;
+        if (pY + pH > $(window).height()) {
+            pH = $(window).height() - pY;
         }
 
         // case: if body's elements are all absolutely/fixed positioned, use window height
-        if (pH == 0 && pEl.tagName == "BODY") {
-            pH = wH;
+        if (pH == 0 && pEl.get(0).tagName == "BODY") {
+            pH = $(window).height();
         }
 
-        function scrollTo(el, scrollTo) {
-            if (opts.smooth) {
-                $(el).stop().animate({ scrollTop: scrollTo }, opts);
-            } else {
-                el.scrollTop = scrollTo;
-                if ($.isFunction(opts.complete)) {
-                    opts.complete.call(el);
-                }
-            }
-        }
-
-        if (elY <= pY) {
-            scrollTo(pEl, elY); // scroll up
+        if (elY <= pY || elH > pH) {
+            scroll(pEl, elY - pY, opts); // scroll up
         } else if (elY + elH > pY + pH) {
-            scrollTo(pEl, elY + elH - pH); // scroll down
+            scroll(pEl, elY + elH - pY - pH, opts); // scroll down
         } else {
             // no scroll
             if ($.isFunction(opts.complete)) {
