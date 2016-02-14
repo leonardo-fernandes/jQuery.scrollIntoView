@@ -17,6 +17,10 @@
         // The first argment can be false for no animation or a duration.
         // The first argment could also be a map of options.
         // Refer to http://api.jquery.com/animate/.
+    	if(this.length == 0) {
+    		return this;
+    	}
+    	
         var opts = $.extend({},
         $.fn.scrollIntoView.defaults);
 
@@ -123,7 +127,7 @@
         // Iterate until equality is found
         for (var i = 0; i < parents[0].length; i++) {
             var equal = true;
-            for (var j in parents) {
+            for (var j = 0; j < parents.length; j++) {
                 if (parents[j][i] != parents[0][i]) {
                     equal = false;
                     break;
