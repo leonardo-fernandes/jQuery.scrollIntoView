@@ -10,6 +10,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  * 
  * @date 15 Feb 2016
+ * @author Arwid Bancewicz http://arwid.ca (up to version 0.3)
  * @author Leonardo Fernandes
  * @version 0.5
  */
