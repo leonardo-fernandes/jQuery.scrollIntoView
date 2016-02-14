@@ -3,13 +3,15 @@
  * The default browser behavior always places the element at the top or bottom of its container. 
  * This override is smart enough to not scroll if the element is already visible.
  *
+ * Original script was developed by Arwid Bancewicz. Here follows the original licensing:
+ *
  * Copyright 2011 Arwid Bancewicz
  * Licensed under the MIT license
  * http://www.opensource.org/licenses/mit-license.php
  * 
- * @date 8 Jan 2013
- * @author Arwid Bancewicz http://arwid.ca
- * @version 0.3
+ * @date 15 Feb 2016
+ * @author Leonardo Fernandes
+ * @version 0.5
  */
 (function($) {
     var commonAncestor = function() {
