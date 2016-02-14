@@ -1,5 +1,5 @@
-/*!
- * $.fn.scrollIntoView - similar to the default browser scrollIntoView
+/**
+ * @preserve $.fn.scrollIntoView - similar to the default browser scrollIntoView
  * The default browser behavior always places the element at the top or bottom of its container. 
  * This override is smart enough to not scroll if the element is already visible.
  *
@@ -11,7 +11,7 @@
  * 
  * @date 15 Feb 2016
  * @author Arwid Bancewicz http://arwid.ca (up to version 0.3)
- * @author Leonardo Fernandes
+ * @author Leonardo Fernandes <leonardo.monteiro.fernandes@gmail.com>
  * @version 0.5
  */
 (function($) {
