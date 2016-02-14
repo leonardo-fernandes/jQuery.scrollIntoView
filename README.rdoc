@@ -1,6 +1,6 @@
 = jQuery.scrollIntoView
 
-author:: Arwid Bancewicz http://arwid.ca
+author:: Arwid Bancewicz http://arwid.ca (up to version 0.3)
 author:: Leonardo Fernandes
 version:: 0.5
 updated:: 15 Feb 2016
