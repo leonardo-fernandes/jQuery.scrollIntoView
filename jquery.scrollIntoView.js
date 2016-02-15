@@ -41,7 +41,7 @@
         var pEl = commonAncestor.call(this);
 
         // go up parents until we find one that scrolls
-        while (!pEl.is(":root")) {
+        while (!pEl.is("html")) {
             // it wiggles?
             var scrollTop = pEl.get(0).scrollTop;
 
@@ -112,7 +112,7 @@
         var pY = pEl.offset().top;
         var pH = pEl.height();
 
-        if (pEl.is(":root") || pEl.is("body")) {
+        if (pEl.is("html") || pEl.is("body")) {
             pY = pEl.get(0).scrollTop;
             pH = $(window).height();
         }
