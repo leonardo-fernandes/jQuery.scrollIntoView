@@ -112,7 +112,7 @@
         var pY = pEl.offset().top;
         var pH = pEl.height();
 
-        if (pEl.is(":root")) {
+        if (pEl.is(":root") || pEl.is("body")) {
             pY = pEl.get(0).scrollTop;
             pH = $(window).height();
         }
